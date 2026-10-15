@@ -1,8 +1,9 @@
 LandCover,Pixel_Count,LandCover_Name,Percentage
-10,483,Tree cover,4.88
-20,714,Shrubland,7.22
-30,2421,Grassland,24.47
-40,5253,Cropland,53.1
-50,839,Built-up land,8.48
-60,154,Bare/sparse vegetation,1.56
-80,29,Permanent water bodies,0.29
+10,11753,Tree cover,11.98
+20,3947,Shrubland,4.02
+30,1274,Grassland,1.3
+40,36580,Cropland,37.3
+50,42214,Built-up land,43.04
+60,1409,Bare/sparse vegetation,1.44
+80,898,Permanent water bodies,0.92
+90,3,Herbaceous wetland,0.0

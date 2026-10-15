@@ -1,1 +1,47 @@
-outputs/*.pkl
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# IDE configs
+.vscode/
+.idea/
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Streamlit secrets (never commit credentials)
+.streamlit/secrets.toml
+
+# Archived legacy study-area data (kept locally, not part of this repo)
+archive_maharashtra/
+
+# Temp / backup files
+*.bak
+*.tmp
+*.swp
+*~
+
+# NOTE: intentionally NOT ignoring data/, outputs/dashboard_data/,
+# outputs/reports/, outputs/models/ or data/processed/featured_uhi_v3.csv
+# so the Streamlit app and AI simulator work out-of-the-box on clone.
+# Largest tracked CSV is ~29 MB, well under GitHub's 100 MB file limit.

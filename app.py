@@ -234,6 +234,18 @@ st.markdown(
             margin: 26px 0;
         }
 
+        /* Force high-contrast dark labels on all Plotly chart SVG text */
+        .js-plotly-plot .plotly text {
+            fill: #1a0908 !important;
+        }
+        .js-plotly-plot .plotly .gtitle,
+        .js-plotly-plot .plotly .xtitle,
+        .js-plotly-plot .plotly .ytitle,
+        .js-plotly-plot .plotly .legendtitletext {
+            fill: #3b080c !important;
+            font-weight: 700 !important;
+        }
+
         .footer-text {
             text-align: center;
             color: #8a6e65;
@@ -277,16 +289,25 @@ DATA_FOLDER = "outputs/dashboard_data"
 
 @st.cache_data
 def load_data():
-    hotspot_map = pd.read_csv(os.path.join(DATA_FOLDER, "dashboard_hotspot_map_v3.csv"))
-    scenario_map = pd.read_csv(os.path.join(DATA_FOLDER, "dashboard_scenario_map_v3.csv"))
-    priority_zones = pd.read_csv(os.path.join(DATA_FOLDER, "dashboard_priority_zones_v3.csv"))
-    intervention_zones = pd.read_csv(os.path.join(DATA_FOLDER, "dashboard_intervention_zones_v3.csv"))
-    shap_importance = pd.read_csv(os.path.join(DATA_FOLDER, "dashboard_shap_importance_v3.csv"))
-    model_comparison = pd.read_csv(os.path.join(DATA_FOLDER, "dashboard_model_comparison.csv"))
-    scenario_summary = pd.read_csv(os.path.join(DATA_FOLDER, "dashboard_scenario_summary_v3.csv"))
+    hotspot_map = pd.read_csv(os.path.join(
+        DATA_FOLDER, "dashboard_hotspot_map_v3.csv"))
+    scenario_map = pd.read_csv(os.path.join(
+        DATA_FOLDER, "dashboard_scenario_map_v3.csv"))
+    priority_zones = pd.read_csv(os.path.join(
+        DATA_FOLDER, "dashboard_priority_zones_v3.csv"))
+    intervention_zones = pd.read_csv(os.path.join(
+        DATA_FOLDER, "dashboard_intervention_zones_v3.csv"))
+    shap_importance = pd.read_csv(os.path.join(
+        DATA_FOLDER, "dashboard_shap_importance_v3.csv"))
+    model_comparison = pd.read_csv(os.path.join(
+        DATA_FOLDER, "dashboard_model_comparison.csv"))
+    scenario_summary = pd.read_csv(os.path.join(
+        DATA_FOLDER, "dashboard_scenario_summary_v3.csv"))
     kpis = pd.read_csv(os.path.join(DATA_FOLDER, "dashboard_kpis_v3.csv"))
-    vulnerability_map = pd.read_csv(os.path.join(DATA_FOLDER, "dashboard_vulnerability_map_v3.csv"))
-    vulnerability_zones = pd.read_csv(os.path.join(DATA_FOLDER, "dashboard_vulnerability_zones_v3.csv"))
+    vulnerability_map = pd.read_csv(os.path.join(
+        DATA_FOLDER, "dashboard_vulnerability_map_v3.csv"))
+    vulnerability_zones = pd.read_csv(os.path.join(
+        DATA_FOLDER, "dashboard_vulnerability_zones_v3.csv"))
 
     return (
         hotspot_map,
@@ -396,21 +417,27 @@ def format_hover_labels(hover_columns):
 
 def style_map(fig, zoom=11.2):
     fig.update_layout(
-        mapbox_style="carto-positron",
-        mapbox=dict(
-            zoom=zoom,
-            pitch=0,
-            bearing=0
+        template="plotly_white",
+        map=dict(
+            center=dict(lat=23.0225, lon=72.5714),
+            zoom=zoom
         ),
-        margin={"r": 0, "t": 42, "l": 0, "b": 0},
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        font_color="#2f1d1a",
+        map_style="open-street-map",
+        margin={"r": 0, "t": 46, "l": 0, "b": 0},
+        paper_bgcolor="#fffdf9",
+        plot_bgcolor="#fffdf9",
+        font=dict(family="Arial, sans-serif", color="#1a0908", size=13),
+        title=dict(font=dict(family="Arial, sans-serif", color="#3b080c", size=16)),
+        coloraxis_colorbar=dict(
+            tickfont=dict(family="Arial, sans-serif", color="#1a0908", size=12),
+            title=dict(font=dict(family="Arial, sans-serif", color="#3b080c", size=13))
+        ),
         legend=dict(
-            bgcolor="rgba(255,253,249,0.92)",
-            bordercolor="#ead6ca",
+            bgcolor="rgba(255,253,249,0.96)",
+            bordercolor="#d8bfb2",
             borderwidth=1,
-            font=dict(size=11),
+            font=dict(family="Arial, sans-serif", size=12, color="#1a0908"),
+            title_font=dict(family="Arial, sans-serif", size=13, color="#3b080c"),
             x=0.99,
             y=0.98,
             xanchor="right",
@@ -422,17 +449,38 @@ def style_map(fig, zoom=11.2):
 
 def style_chart(fig):
     fig.update_layout(
-        paper_bgcolor="rgba(0,0,0,0)",
+        template="plotly_white",
+        paper_bgcolor="#fffdf9",
         plot_bgcolor="#fffdf9",
-        font_color="#2f1d1a",
-        title_font_color="#4b1617",
-        xaxis=dict(gridcolor="#f0e0d7"),
-        yaxis=dict(gridcolor="#f0e0d7"),
+        font=dict(family="Arial, sans-serif", color="#1a0908", size=13),
+        title=dict(font=dict(family="Arial, sans-serif", color="#3b080c", size=16)),
+        xaxis=dict(
+            gridcolor="#e8d5c8",
+            linecolor="#b89f91",
+            tickfont=dict(family="Arial, sans-serif", color="#1a0908", size=12),
+            title_font=dict(family="Arial, sans-serif", color="#3b080c", size=14)
+        ),
+        yaxis=dict(
+            gridcolor="#e8d5c8",
+            linecolor="#b89f91",
+            tickfont=dict(family="Arial, sans-serif", color="#1a0908", size=12),
+            title_font=dict(family="Arial, sans-serif", color="#3b080c", size=14)
+        ),
         legend=dict(
-            bgcolor="rgba(255,253,249,0.92)",
-            bordercolor="#ead6ca",
-            borderwidth=1
+            bgcolor="rgba(255,253,249,0.96)",
+            bordercolor="#d8bfb2",
+            borderwidth=1,
+            font=dict(family="Arial, sans-serif", color="#1a0908", size=12),
+            title_font=dict(family="Arial, sans-serif", color="#3b080c", size=13)
+        ),
+        coloraxis_colorbar=dict(
+            tickfont=dict(family="Arial, sans-serif", color="#1a0908", size=12),
+            title=dict(font=dict(family="Arial, sans-serif", color="#3b080c", size=13))
         )
+    )
+    fig.update_traces(
+        textfont=dict(family="Arial, sans-serif", color="#1a0908", size=12),
+        selector=dict(type="bar")
     )
     return fig
 
@@ -445,48 +493,108 @@ def make_small_clean_map(
     color_map,
     height=600
 ):
+    """Build a categorical point map or numeric LST density map."""
     map_data = dataframe.copy()
+    required = ["Latitude", "Longitude"]
+    missing = [column for column in required if column not in map_data.columns]
+    if missing:
+        st.error("Cannot draw map. Missing coordinate columns: " +
+                 ", ".join(missing))
+        return go.Figure()
 
-    # Keeps map readable while tables/KPIs still use the full dataset.
+    map_data["Latitude"] = pd.to_numeric(map_data["Latitude"], errors="coerce")
+    map_data["Longitude"] = pd.to_numeric(
+        map_data["Longitude"], errors="coerce")
+    map_data = map_data.dropna(subset=["Latitude", "Longitude"])
+    if map_data.empty:
+        st.warning("There are no valid coordinates to display.")
+        return go.Figure()
+
+    map_mode = st.radio(
+        "Map Visualisation Style:",
+        ["Scatter Points", "Gradient Heatmap (LST Surface)"],
+        horizontal=True,
+        key=f"map_mode_{title}"
+    )
+
+    # Sample only the map for responsiveness; other dashboard calculations use full data.
     if len(map_data) > 2500:
         map_data = map_data.sample(n=2500, random_state=42)
 
-    category_order = HEAT_CATEGORY_ORDER if color_column in [
-        "Heat_Category",
-        "Vulnerability_Category"
-    ] else None
-
-    fig = px.scatter_mapbox(
-        map_data,
-        lat="Latitude",
-        lon="Longitude",
-        color=color_column,
-        hover_data=hover_columns,
-        labels=format_hover_labels(hover_columns),
-        zoom=11.2,
-        height=height,
-        title=title,
-        color_discrete_map=color_map,
-        category_orders={
-            color_column: category_order
-        } if category_order else None
+    category_order = (
+        HEAT_CATEGORY_ORDER
+        if color_column in ["Heat_Category", "Vulnerability_Category"]
+        else None
     )
 
-    # scatter_mapbox does not support marker.line.
-    fig.update_traces(
-        marker=dict(
-            size=6,
-            opacity=0.64
+    if "Gradient" in map_mode:
+        if color_column == "Vulnerability_Category" and "Heat_Vulnerability_Index" in map_data.columns:
+            numeric_candidates = ["Heat_Vulnerability_Index", "Baseline_Predicted_LST_C", "Predicted_LST_C", "LST"]
+        else:
+            numeric_candidates = [
+                "Observed_LST_C", "Predicted_LST_C",
+                "Baseline_Predicted_LST_C", "LST"
+            ]
+        z_column = next((
+            column for column in numeric_candidates
+            if column in map_data.columns
+            and pd.api.types.is_numeric_dtype(map_data[column])
+        ), None)
+        if z_column is None:
+            st.warning(
+                "No numeric LST column is available for a gradient map. Showing scatter points instead.")
+            map_mode = "Scatter Points"
+        else:
+            density_data = map_data.dropna(subset=[z_column])
+            if density_data.empty:
+                st.warning(
+                    f"No valid values are available in {z_column} for the gradient map.")
+                return go.Figure()
+            fig = px.density_map(
+                density_data,
+                lat="Latitude",
+                lon="Longitude",
+                z=z_column,
+                radius=18,
+                zoom=11.2,
+                height=height,
+                title=title,
+                color_continuous_scale="YlOrRd",
+                hover_data=clean_map_columns(
+                    density_data, [z_column, "Zone_ID"])
+            )
+            fig.update_traces(opacity=0.75)
+
+    if map_mode == "Scatter Points":
+        if color_column not in map_data.columns:
+            st.error(
+                f"Cannot draw map: '{color_column}' is missing from the dataset.")
+            return go.Figure()
+        fig = px.scatter_map(
+            map_data,
+            lat="Latitude",
+            lon="Longitude",
+            color=color_column,
+            hover_data=clean_map_columns(map_data, hover_columns),
+            labels=format_hover_labels(hover_columns),
+            zoom=11.2,
+            height=height,
+            title=title,
+            color_discrete_map=color_map,
+            category_orders={
+                color_column: category_order} if category_order else None
         )
-    )
+        # Densitymap traces do not support marker; apply this only to scattermap.
+        fig.update_traces(
+            marker=dict(size=6, opacity=0.64),
+            selector=dict(type="scattermap")
+        )
 
     fig.update_layout(
         legend_title_text=MAP_LEGEND_TITLES.get(
-            color_column,
-            color_column.replace("_", " ")
+            color_column, color_column.replace("_", " ")
         )
     )
-
     return style_map(fig, zoom=11.2)
 
 
@@ -560,8 +668,8 @@ st.sidebar.markdown(
     <div class="sidebar-study-card">
         <div class="sidebar-study-title">📍 STUDY AREA</div>
         <div class="sidebar-study-value">
-            Chhatrapati Sambhajinagar<br>
-            (Aurangabad), Maharashtra
+            Ahmedabad<br>
+            Gujarat, India
         </div>
         <br>
         <div class="sidebar-study-value">
@@ -575,33 +683,6 @@ st.sidebar.markdown(
 )
 
 st.sidebar.markdown("---")
-
-st.sidebar.markdown(
-    """
-    <div style="
-        color:white;
-        font-size:18px;
-        font-weight:700;
-        margin-bottom:8px;
-    ">
-        TEAM ASTROBYTE
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-st.sidebar.markdown(
-    """
-**Priyal Deshmukh**  
-AI/ML Lead  
-
-**Srushti Bawaskar**  
-Geospatial & Data Lead  
-
-**Rishika Deshmukh**  
-Research, Documentation & Dashboard Lead
-"""
-)
 # ==================================================
 # TOP HEADER
 # ==================================================
@@ -629,7 +710,7 @@ with header_right:
             """
             <div class="top-info-card">
                 <div class="top-info-label">📍 Study Area</div>
-                <div class="top-info-value">Chhatrapati Sambhajinagar</div>
+                <div class="top-info-value">Ahmedabad, Gujarat</div>
             </div>
             """,
             unsafe_allow_html=True
@@ -640,7 +721,7 @@ with header_right:
             """
             <div class="top-info-card">
                 <div class="top-info-label">📅 Year</div>
-                <div class="top-info-value">2025</div>
+                <div class="top-info-value">2026</div>
             </div>
             """,
             unsafe_allow_html=True
@@ -665,7 +746,7 @@ if page == "Project Overview":
     )
 
     st.markdown(
-    
+
         """
         <div class="section-panel">
             <div class="section-title">🧭 How to Use This Dashboard</div>
@@ -731,7 +812,8 @@ if page == "Project Overview":
 
     with left_col:
         st.markdown('<div class="section-panel">', unsafe_allow_html=True)
-        st.markdown('<div class="section-title">🔥 Urban Heat Hotspots</div>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="section-title">🔥 Urban Heat Hotspots</div>', unsafe_allow_html=True)
 
         heat_options = [
             category for category in HEAT_CATEGORY_ORDER
@@ -772,7 +854,7 @@ if page == "Project Overview":
                 height=430
             )
 
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(style_chart(fig) if 'scattermap' not in str(fig.data) and 'densitymap' not in str(fig.data) else style_map(fig), use_container_width=True, theme=None)
 
         else:
             st.warning("No locations match the selected heat categories.")
@@ -781,7 +863,8 @@ if page == "Project Overview":
 
     with right_col:
         st.markdown('<div class="section-panel">', unsafe_allow_html=True)
-        st.markdown('<div class="section-title">Heat Stress Distribution</div>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="section-title">Heat Stress Distribution</div>', unsafe_allow_html=True)
 
         if "Heat_Category" in hotspot_map.columns:
             heat_counts = (
@@ -820,14 +903,15 @@ if page == "Project Overview":
                 paper_bgcolor="rgba(0,0,0,0)",
                 font_color="#2f1d1a",
                 showlegend=True,
+                template="plotly_white",
                 legend=dict(
-                    title="Heat Stress Level",
+                    title=dict(text="Heat Stress Level", font=dict(color="#3b080c", size=13)),
                     orientation="v",
                     x=1.02,
                     y=0.5,
                     xanchor="left",
                     yanchor="middle",
-                    font=dict(size=11)
+                    font=dict(size=12, color="#1a0908")
                 ),
                 annotations=[
                     dict(
@@ -840,7 +924,7 @@ if page == "Project Overview":
                 ]
             )
 
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(style_chart(fig) if 'scattermap' not in str(fig.data) and 'densitymap' not in str(fig.data) else style_map(fig), use_container_width=True, theme=None)
 
         st.markdown("</div>", unsafe_allow_html=True)
 
@@ -848,7 +932,8 @@ if page == "Project Overview":
 
     with col_a:
         st.markdown('<div class="section-panel">', unsafe_allow_html=True)
-        st.markdown('<div class="section-title">📊 Top Heat Drivers (SHAP)</div>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="section-title">📊 Top Heat Drivers (SHAP)</div>', unsafe_allow_html=True)
 
         shap_plot_data = shap_importance.sort_values(
             by="Mean_Absolute_SHAP",
@@ -871,7 +956,7 @@ if page == "Project Overview":
             xaxis_title="Mean Absolute SHAP Value"
         )
 
-        st.plotly_chart(style_chart(fig), use_container_width=True)
+        st.plotly_chart(style_chart(fig), use_container_width=True, theme=None)
         st.markdown("</div>", unsafe_allow_html=True)
 
     with col_b:
@@ -1006,7 +1091,7 @@ elif page == "Urban Heat Hotspots":
             height=610
         )
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(style_chart(fig) if 'scattermap' not in str(fig.data) and 'densitymap' not in str(fig.data) else style_map(fig), use_container_width=True, theme=None)
 
     else:
         st.warning("No locations match the selected heat categories.")
@@ -1054,7 +1139,7 @@ elif page == "Heat Drivers":
         xaxis_title="Mean Absolute SHAP Value"
     )
 
-    st.plotly_chart(style_chart(fig), use_container_width=True)
+    st.plotly_chart(style_chart(fig), use_container_width=True, theme=None)
 
     st.markdown(
         """
@@ -1131,13 +1216,14 @@ elif page == "Heat Vulnerability":
             height=610
         )
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(style_chart(fig) if 'scattermap' not in str(fig.data) and 'densitymap' not in str(fig.data) else style_map(fig), use_container_width=True, theme=None)
 
     else:
         st.warning("No locations match the selected vulnerability categories.")
 
     st.subheader("Top High-Priority Vulnerability Zones")
-    st.dataframe(vulnerability_zones, use_container_width=True, hide_index=True)
+    st.dataframe(vulnerability_zones,
+                 use_container_width=True, hide_index=True)
 
 
 # ==================================================
@@ -1184,14 +1270,35 @@ elif page == "AI Cooling Intervention Simulator":
     def load_simulation_dataset():
         return pd.read_csv(DATA_PATH)
 
-    model = load_ai_model()
+    try:
+        model = load_ai_model()
+        simulation_df = load_simulation_dataset().copy()
+    except FileNotFoundError as error:
+        st.error(
+            "The simulation model or dataset could not be found. Check the expected paths below.")
+        st.code(str(error))
+        st.info(
+            f"Expected model: {MODEL_PATH.as_posix()}\nExpected dataset: {DATA_PATH.as_posix()}")
+        st.stop()
+    except Exception as error:
+        st.error(f"Could not load the simulation model or dataset: {error}")
+        st.stop()
 
-    simulation_df = load_simulation_dataset().copy()
-        
+    if simulation_df.empty:
+        st.error("The simulation dataset is empty. Check the processed CSV file.")
+        st.stop()
+
+    if "LandCover_Herbaceous_wetland" not in simulation_df.columns:
+        simulation_df["LandCover_Herbaceous_wetland"] = 0.0
+
     missing_features = [
         feature
         for feature in MODEL_FEATURES
         if feature not in simulation_df.columns
+    ]
+    missing_coordinates = [
+        column for column in ["Latitude", "Longitude"]
+        if column not in simulation_df.columns
     ]
 
     if missing_features:
@@ -1201,6 +1308,11 @@ elif page == "AI Cooling Intervention Simulator":
             + "\n".join(missing_features)
         )
 
+        st.stop()
+
+    if missing_coordinates:
+        st.error("Required coordinate columns are missing: " +
+                 ", ".join(missing_coordinates))
         st.stop()
 
     st.markdown("---")
@@ -1226,7 +1338,6 @@ elif page == "AI Cooling Intervention Simulator":
             value=25,
             step=1,
         )
-        
 
         cool_roofs = st.slider(
             "🏠 Cool Roof Adoption (%)",
@@ -1252,16 +1363,18 @@ elif page == "AI Cooling Intervention Simulator":
             step=1,
         )
 
-        run_simulation = st.button(
+        if st.button(
             "🛰 Run AI Simulation",
             use_container_width=True,
             type="primary",
-        )
+        ):
+            st.session_state["sim_active"] = True
+        run_simulation = st.session_state.get("sim_active", False)
 
     with right_col:
 
         st.markdown(
-        """
+            """
         ### Simulation Workflow
 
         1. Selected interventions modify environmental indicators.
@@ -1280,189 +1393,111 @@ elif page == "AI Cooling Intervention Simulator":
 
         st.markdown("---")
 
-        def clip(series, low=None, high=None):
+    def clip(series, low=None, high=None):
+        if low is not None:
+            series = np.maximum(series, low)
+        if high is not None:
+            series = np.minimum(series, high)
+        return series
 
-            if low is not None:
-                series = np.maximum(series, low)
+    def normalize_landcover(df):
+        cols = [
+            "LandCover_Bare_sparse_vegetation",
+            "LandCover_Built-up land",
+            "LandCover_Cropland",
+            "LandCover_Grassland",
+            "LandCover_Permanent_water_bodies",
+            "LandCover_Shrubland",
+            "LandCover_Tree cover",
+        ]
+        total = df[cols].sum(axis=1).replace(0, 1)
+        df[cols] = df[cols].div(total, axis=0)
+        return df
 
-            if high is not None:
-                series = np.minimum(series, high)
-
-            return series
-
-        def normalize_landcover(df):
-
-            cols = [
-                "LandCover_Bare_sparse_vegetation",
-                "LandCover_Built-up land",
-                "LandCover_Cropland",
-                "LandCover_Grassland",
-                "LandCover_Permanent_water_bodies",
-                "LandCover_Shrubland",
-                "LandCover_Tree cover",
-            ]
-
-            total = df[cols].sum(axis=1)
-
-            total = total.replace(0, 1)
-
-            df[cols] = df[cols].div(total, axis=0)
-
-            return df
     def apply_interventions(df):
-
         simulated = df.copy()
 
-        # ==========================================================
-        # NDVI MODIFICATION
-        # ==========================================================
-
+        # These are hypothetical feature perturbations for scenario comparison,
+        # not empirically validated cooling coefficients.
         ndvi_increase = (
             green_cover * 0.0050
             + tree_cover * 0.0070
             + permeable_surface * 0.0020
         )
-
-        simulated["NDVI"] = clip(
-            simulated["NDVI"] + ndvi_increase,
-            -1,
-            1,
-        )
-
-        # ==========================================================
-        # NDBI MODIFICATION
-        # ==========================================================
+        simulated["NDVI"] = clip(simulated["NDVI"] + ndvi_increase, -1, 1)
 
         ndbi_decrease = (
             builtup_reduction * 0.0045
             + green_cover * 0.0008
             + tree_cover * 0.0004
         )
-
-        simulated["NDBI"] = clip(
-            simulated["NDBI"] - ndbi_decrease,
-            -1,
-            1,
-        )
-
-        # ==========================================================
-        # TREE COVER
-        # ==========================================================
+        simulated["NDBI"] = clip(simulated["NDBI"] - ndbi_decrease, -1, 1)
 
         simulated["LandCover_Tree cover"] = clip(
-            simulated["LandCover_Tree cover"]
-            + tree_cover * 0.002
-            + green_cover * 0.010,
-            0,
-            None,
+            simulated["LandCover_Tree cover"] +
+            tree_cover * 0.002 + green_cover * 0.010,
+            0, None
         )
-
-        # ==========================================================
-        # BUILT-UP LAND
-        # ==========================================================
-
         simulated["LandCover_Built-up land"] = clip(
             simulated["LandCover_Built-up land"]
             - builtup_reduction * 0.004
             - permeable_surface * 0.002
             - cool_roofs * 0.001,
-            0,
-            None,
+            0, None
         )
-
-        # ==========================================================
-        # CROPLAND
-        # ==========================================================
-
         simulated["LandCover_Cropland"] = clip(
-            simulated["LandCover_Cropland"]
-            + green_cover * 0.0005,
-            0,
-            None,
+            simulated["LandCover_Cropland"] + green_cover * 0.0005, 0, None
         )
-
-        # ==========================================================
-        # GRASSLAND
-        # ==========================================================
-
         simulated["LandCover_Grassland"] = clip(
             simulated["LandCover_Grassland"]
-            + green_cover * 0.001
-            + permeable_surface * 0.001,
-            0,
-            None,
+            + green_cover * 0.001 + permeable_surface * 0.001,
+            0, None
         )
-
-        # ==========================================================
-        # SHRUBLAND
-        # ==========================================================
-
         simulated["LandCover_Shrubland"] = clip(
-            simulated["LandCover_Shrubland"]
-            + green_cover * 0.0005,
-            0,
-            None,
+            simulated["LandCover_Shrubland"] + green_cover * 0.0005, 0, None
         )
-
-        # ==========================================================
-        # BARE / SPARSE VEGETATION
-        # ==========================================================
-
         simulated["LandCover_Bare_sparse_vegetation"] = clip(
-            simulated["LandCover_Bare_sparse_vegetation"]
-            - green_cover * 0.001,
-            0,
-            None,
+            simulated["LandCover_Bare_sparse_vegetation"] -
+            green_cover * 0.001,
+            0, None
         )
-
-        # ==========================================================
-        # WATER BODIES
-        # ==========================================================
-
         simulated["LandCover_Permanent_water_bodies"] = clip(
-            simulated["LandCover_Permanent_water_bodies"],
-            0,
-            None,
+            simulated["LandCover_Permanent_water_bodies"], 0, None
         )
-
-        simulated = normalize_landcover(simulated)
-
-        return simulated
-    # ==========================================================
-    # HOTSPOT CLASSIFICATION
-    # ==========================================================
+        return normalize_landcover(simulated)
 
     def classify_hotspot(lst):
-
         if lst >= 42:
             return "Extreme"
-
-        elif lst >= 38:
+        if lst >= 38:
             return "Very High"
-
-        elif lst >= 34:
+        if lst >= 34:
             return "High"
-
-        elif lst >= 30:
+        if lst >= 30:
             return "Moderate"
-
-        else:
-            return "Low"
-
-    # ==========================================================
-    # RUN AI SIMULATION
-    # ==========================================================
+        return "Low"
 
     if run_simulation:
 
         simulated_df = apply_interventions(simulation_df)
 
+        expected_features = (
+            model.get_booster().feature_names
+            if hasattr(model, "get_booster") and model.get_booster().feature_names
+            else list(getattr(model, "feature_names_in_", MODEL_FEATURES))
+        )
+        for col in expected_features:
+            if col not in simulation_df.columns:
+                simulation_df[col] = 0.0
+            if col not in simulated_df.columns:
+                simulated_df[col] = 0.0
+
         before_prediction = model.predict(
-            simulation_df[MODEL_FEATURES]
+            simulation_df[expected_features]
         )
 
         after_prediction = model.predict(
-            simulated_df[MODEL_FEATURES]
+            simulated_df[expected_features]
         )
 
         simulated_df["LST_Before"] = before_prediction
@@ -1482,7 +1517,6 @@ elif page == "AI Cooling Intervention Simulator":
             .apply(classify_hotspot)
         )
 
-      
         avg_before = simulated_df["LST_Before"].mean()
         avg_after = simulated_df["LST_After"].mean()
 
@@ -1514,7 +1548,7 @@ elif page == "AI Cooling Intervention Simulator":
         else:
 
             improvement = 0
-            
+
         # ==========================================================
         # KPI DASHBOARD
         # ==========================================================
@@ -1601,7 +1635,7 @@ elif page == "AI Cooling Intervention Simulator":
             template="plotly_white",
             showlegend=False,
             xaxis_title="",
-            yaxis_title="Average LST (°C)",
+            yaxis_title="Average LST (°C)", yaxis_range=[0, max(avg_before, avg_after) * 1.18],
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="#fffdf9",
             font_color="#2f1d1a"
@@ -1615,9 +1649,8 @@ elif page == "AI Cooling Intervention Simulator":
             gridcolor="#f0e0d7"
         )
 
-        st.plotly_chart(
-            fig,
-            use_container_width=True,
+        st.plotly_chart(style_chart(fig) if 'scattermap' not in str(fig.data) and 'densitymap' not in str(fig.data) else style_map(fig),
+            use_container_width=True, theme=None,
             config={
                 "displaylogo": False,
                 "displayModeBar": False
@@ -1660,9 +1693,8 @@ elif page == "AI Cooling Intervention Simulator":
             gridcolor="#f0e0d7"
         )
 
-        st.plotly_chart(
-            fig,
-            use_container_width=True,
+        st.plotly_chart(style_chart(fig) if 'scattermap' not in str(fig.data) and 'densitymap' not in str(fig.data) else style_map(fig),
+            use_container_width=True, theme=None,
             config={
                 "displaylogo": False,
                 "displayModeBar": False
@@ -1672,10 +1704,21 @@ elif page == "AI Cooling Intervention Simulator":
         st.markdown("---")
 
         # ==========================================================
-        # AI HOTSPOT MAP
+        # AI HOTSPOT MAP (WITH GRADIENT HEATMAP TOGGLE)
         # ==========================================================
 
         st.subheader("🛰 AI Predicted Heat Hotspots")
+
+        sim_map_mode = st.radio(
+            "AI Map Visualisation Mode:",
+            [
+                "Scatter Points (Hotspot Categories)",
+                "Gradient Heatmap (Post-Intervention LST °C)",
+                "Cooling Impact Gradient (Temperature Reduction °C)"
+            ],
+            horizontal=True,
+            key="sim_hotspot_map_mode"
+        )
 
         hotspot_colors = {
             "Low": "#4F7D50",
@@ -1686,46 +1729,81 @@ elif page == "AI Cooling Intervention Simulator":
         }
 
         map_df = simulated_df.copy()
+        if len(map_df) > 2500:
+            map_df = map_df.sample(n=2500, random_state=42)
 
-        fig = px.scatter_mapbox(
-            map_df,
-            lat="Latitude",
-            lon="Longitude",
-            color="Hotspot_After",
-            hover_name="Hotspot_After",
-            hover_data={
-                "Latitude":":.4f",
-                "Longitude":":.4f",
-                "LST_Before":":.2f",
-                "LST_After":":.2f",
-                "Temperature_Reduction":":.2f"
-            },
-            color_discrete_map=hotspot_colors,
-            zoom=11,
-            height=650
-        )
-
-        fig.update_traces(
-            marker=dict(
-                size=7,
-                opacity=0.72
+        if "Post-Intervention LST" in sim_map_mode:
+            fig = px.density_map(
+                map_df,
+                lat="Latitude",
+                lon="Longitude",
+                z="LST_After",
+                radius=18,
+                zoom=11.2,
+                height=650,
+                title="Simulated Land Surface Temperature Surface (°C)",
+                color_continuous_scale="YlOrRd",
+                hover_data={
+                    "Latitude": ":.4f",
+                    "Longitude": ":.4f",
+                    "LST_Before": ":.2f",
+                    "LST_After": ":.2f",
+                    "Temperature_Reduction": ":.2f"
+                }
             )
-        )
+            fig.update_traces(opacity=0.78)
+        elif "Cooling Impact" in sim_map_mode:
+            fig = px.density_map(
+                map_df,
+                lat="Latitude",
+                lon="Longitude",
+                z="Temperature_Reduction",
+                radius=18,
+                zoom=11.2,
+                height=650,
+                title="AI Predicted Cooling Impact Surface (°C Reduction)",
+                color_continuous_scale="Tealgrn",
+                hover_data={
+                    "Latitude": ":.4f",
+                    "Longitude": ":.4f",
+                    "LST_Before": ":.2f",
+                    "LST_After": ":.2f",
+                    "Temperature_Reduction": ":.2f"
+                }
+            )
+            fig.update_traces(opacity=0.78)
+        else:
+            fig = px.scatter_map(
+                map_df,
+                lat="Latitude",
+                lon="Longitude",
+                color="Hotspot_After",
+                hover_name="Hotspot_After",
+                hover_data={
+                    "Latitude": ":.4f",
+                    "Longitude": ":.4f",
+                    "LST_Before": ":.2f",
+                    "LST_After": ":.2f",
+                    "Temperature_Reduction": ":.2f"
+                },
+                color_discrete_map=hotspot_colors,
+                category_orders={"Hotspot_After": ["Low", "Moderate", "High", "Very High", "Extreme"]},
+                zoom=11.2,
+                height=650,
+                title="Post-Intervention Hotspot Classification"
+            )
+            fig.update_traces(
+                marker=dict(size=7, opacity=0.72),
+                selector=dict(type="scattermap")
+            )
 
-        fig.update_layout(
-            mapbox_style="carto-positron",
-            margin=dict(
-                l=0,
-                r=0,
-                t=0,
-                b=0
-            ),
-            legend_title="Hotspot Category"
-        )
+        fig.update_layout(legend_title_text="Hotspot Category")
+        fig = style_map(fig, zoom=11.2)
 
         st.plotly_chart(
             fig,
-            use_container_width=True
+            use_container_width=True,
+            theme=None
         )
 
         st.markdown("---")
@@ -1757,11 +1835,11 @@ elif page == "AI Cooling Intervention Simulator":
 
         hotspot_table.rename(
             columns={
-                "LST_Before":"Before (°C)",
-                "LST_After":"After (°C)",
-                "Temperature_Reduction":"Cooling (°C)",
-                "Hotspot_Before":"Category Before",
-                "Hotspot_After":"Category After"
+                "LST_Before": "Before (°C)",
+                "LST_After": "After (°C)",
+                "Temperature_Reduction": "Cooling (°C)",
+                "Hotspot_Before": "Category Before",
+                "Hotspot_After": "Category After"
             },
             inplace=True
         )
@@ -1870,9 +1948,8 @@ elif page == "AI Cooling Intervention Simulator":
             gridcolor="#f0e0d7"
         )
 
-        st.plotly_chart(
-            fig,
-            use_container_width=True,
+        st.plotly_chart(style_chart(fig) if 'scattermap' not in str(fig.data) and 'densitymap' not in str(fig.data) else style_map(fig),
+            use_container_width=True, theme=None,
             config={
                 "displaylogo": False,
                 "displayModeBar": False
@@ -2086,7 +2163,7 @@ to generate a real-time AI prediction using the trained XGBoost model.
             template="plotly_white",
             showlegend=False,
             xaxis_title="",
-            yaxis_title="Selected Percentage",
+            yaxis_title="Selected Percentage (%)", yaxis_range=[0, 115],
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="#fffdf9",
             font_color="#2f1d1a"
@@ -2100,8 +2177,7 @@ to generate a real-time AI prediction using the trained XGBoost model.
             gridcolor="#f0e0d7"
         )
 
-        st.plotly_chart(
-            fig,
+        st.plotly_chart(style_chart(fig) if 'scattermap' not in str(fig.data) and 'densitymap' not in str(fig.data) else style_map(fig),
             use_container_width=True
         )
 
@@ -2149,7 +2225,7 @@ to generate a real-time AI prediction using the trained XGBoost model.
     # ==========================================================
     # END OF AI COOLING INTERVENTION SIMULATOR
     # ==========================================================
-    
+
 # ==================================================
 # MODEL VALIDATION
 # ==================================================
@@ -2206,8 +2282,8 @@ elif page == "Model Validation":
         "Latitude and Longitude are used only for mapping and spatial grouping. "
         "They are excluded from model features to prevent target leakage and spatial leakage."
     )
-        
-#===================================================
+
+# ===================================================
 # ABOUT PROJECT
 # ==================================================
 elif page == "About Project":
@@ -2219,7 +2295,7 @@ elif page == "About Project":
         <div class="section-panel">
             <div class="section-title">Urban Heat Detection, Prediction & AI Cooling Intervention Planning</div>
             This project develops an AI/ML-powered geospatial decision-support system for
-            Chhatrapati Sambhajinagar. It integrates satellite-derived NDVI, NDBI, LST,
+            Ahmedabad, Gujarat. It integrates satellite-derived NDVI, NDBI, LST,
             elevation, population, and land-cover information to detect heat-stress hotspots,
             predict urban heat, explain model drivers, identify vulnerable zones, and simulate
             cooling interventions.
@@ -2267,15 +2343,6 @@ elif page == "About Project":
         unsafe_allow_html=True
     )
 
-    st.subheader("Team AstroByte")
-    st.markdown(
-        """
-        - **Priyal Deshmukh** — AI/ML Lead  
-        - **Srushti Bawaskar** — Geospatial & Data Lead  
-        - **Rishika Deshmukh** — Research, Documentation & Dashboard Lead  
-        """
-    )
-
 
 # ==================================================
 # FOOTER
@@ -2286,8 +2353,7 @@ st.markdown("---")
 st.markdown(
     """
     <div class="footer-text">
-        Team AstroByte | Bharatiya Antariksh Hackathon 2026 |
-        Urban Heat Detection, Prediction & AI Cooling Intervention Planning
+        UrbanHeat AI | Urban Heat Detection, Prediction & AI Cooling Intervention Planning
     </div>
     """,
     unsafe_allow_html=True
