@@ -12,7 +12,7 @@ The interactive Streamlit dashboard provides views of urban heat hotspots, envir
 To run the application locally:
 
 ```bash
-cd C:\Study\SEM_5\ML\Project\urbanheatplan
+cd urbanheatplan
 
 # Option 1: with uv
 uv run streamlit run app.py
