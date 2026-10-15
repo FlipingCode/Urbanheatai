@@ -94,6 +94,3 @@ All interactive maps use **OpenStreetMap-based tiles** (`open-street-map` style,
 - Cooling values are model-based scenario estimates, not verified real-world outcomes; field validation, engineering review and municipal feasibility checks are required before implementation.
 - Single undated export: hotspot mapping and scenario comparison are supported; temporal forecasting claims are not.
 
-## Attribution
-
-Adapted from the urban heat-stress hotspot-detection workflow originally developed for Chhatrapati Sambhajinagar (see `https://github.com/priyaldeshmukh2005/urban-heat-stress-hotspot-detection`). Inherited modelling, explainability and dashboard code is reused from that project; all data, trained models, metrics and geographic outputs here are regenerated for Ahmedabad. Preserve the original repository's licence terms when redistributing inherited code.
